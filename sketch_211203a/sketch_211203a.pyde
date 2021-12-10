@@ -15,10 +15,10 @@ UFOStop=0
 
 
 textTimer=1
-textX=350
+textX=250
 textY=-300
-textW=562
-textH=202
+textW=757
+textH=97
 textTimeOnScreen=0
 textMovement=3
 textSTOP=0
