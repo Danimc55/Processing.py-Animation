@@ -199,7 +199,14 @@ def backgroundTest():
         fill(200,200,200)
         ellipse(70,70,85,85)
 
-        
+def platforma():
+    fill(91,187,71)
+    ellipseMode(CORNER)
+    ellipse(27,784,298,65)
+    ellipse(395,772,410,90)
+    ellipse(875,784,298,65)
+    ellipseMode(CENTER)
+
 def oblak():
     global cloudClick,cloudClickTimer
     oblakImg1=loadImage("oblak.png")
