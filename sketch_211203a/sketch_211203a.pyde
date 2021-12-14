@@ -1,4 +1,5 @@
 import random
+import math 
 
 smokeList = []
 smokeListDel = []
@@ -41,6 +42,12 @@ clickTimer=0
 
 cloudClick=0
 cloudClickTimer=0
+
+fireWorkTimer=0
+fireWorkList=[]
+fireWorkLengthTimer=0
+fireWorkExplodeTimer=0
+fireWorkLineList=[]
 
 def smoke(X,Y,speed,movement):
     global smokeList,smokeListDel,smokeTimer,smokeMovementTimer,smokeDirection,smokeDirectionTimer,smokeDirectionSpeed
@@ -273,14 +280,60 @@ def wind(windDirection):
             point(el[0]+(windDirection*9), el[1]-4)
         if(el[3]>=10):
             windList=[]
-        
+            
+def fireWork():
+    global fireWorkTimer,fireWorkList,fireWorkLengthTimer,fireWorkExplodeTimer
+    fireWorkTimer=(fireWorkTimer+1)%60
+    if(fireWorkTimer%60==59):
+        fireWorkLineX1=random.randint(200,1000)
+        fireWorkLineY1=900
+        fireWorkExplodeY=random.randint(200,500)
+        fireWorkSize=random.randint(50,100)
+        fireWorkRandomBoom=random.randint(7,10)*2
+        fireWorkSplit=math.pi/fireWorkRandomBoom
+        cosX=0
+        sinY=0
+        fireWorkLength=0
+        fireR=random.randint(0,255)
+        fireG=random.randint(0,255)
+        fireB=random.randint(0,255)
+        fireWorkList.append([fireWorkLineX1,fireWorkLineY1,fireWorkSize,fireWorkRandomBoom,fireWorkSplit,cosX,sinY,fireWorkExplodeY,fireWorkExplodeTimer,fireWorkLength,fireR,fireG,fireB])
+    for fire in fireWorkList:
+        if(fire[1]<=fire[7]):
+            fire[8]+=1
+        else:
+            line(fire[0],fire[1],fire[0],fire[1]+10)
+            fire[1]-=10
+        if(fire[8]>=1):
+            fire[5]=0
+            fire[6]=0
+            for j in range(fire[3]):
+                if(fireWorkLengthTimer%2==0):
+                    fire[9]=1
+                    stroke(fire[10],fire[11],fire[12])
+                else:
+                    fire[9]=0.75
+                    stroke(255-fire[10],255-fire[11],255-fire[12])
+                fireWorkLengthTimer=(fireWorkLengthTimer+1)%2
+                fire[5]+=fire[4]*2
+                fire[6]+=fire[4]*2
+                fireWorkCos=math.cos(fire[5])
+                fireWorkSin=math.sin(fire[6])
+                fireWorkX2=fireWorkCos*fire[2]*fire[9]+fire[0]
+                fireWorkY2=fireWorkSin*fire[2]*fire[9]+fire[1]
+                line(fire[0],fire[1],fireWorkX2,fireWorkY2)
+                
+                
+        if(fire[8]==60):
+            fireWorkList.remove(fire)
+                
 def setup():
     size(1200,900)
     
 def draw():
     global smokeTimer,textTimer,textSTOP,starX,starY,starTimer
+    stroke(0)
     backgroundTest()
-
     smokeRandomWidth=random.randint(50,100)
     smokeRandomHeight=random.randint(40,80)
     smokeRandomSpeed=random.randint(1,5)
@@ -302,6 +355,8 @@ def draw():
     smoke(smokeRandomWidth,smokeRandomHeight,smokeRandomSpeed,smokeMovement)
     oblak()
     UFOS(UFOX,UFOY,UFODirection,UFOYMovement)
+    fireWork()
+    stroke(0)
     if(keyPressed and key=="n" or key == "N"):
         textTimer=0
     if(textTimer==0):
