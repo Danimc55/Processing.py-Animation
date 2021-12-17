@@ -29,7 +29,7 @@ starX=1200
 starY=random.randint(0,200)
 starSpeedTimer=0
 starSpeedX=random.randint(10,20)
-starSpeedY=1
+starSpeedY=-1
 
 windList=[]
 windListDel=[]
@@ -48,6 +48,13 @@ fireWorkList=[]
 fireWorkLengthTimer=0
 fireWorkExplodeTimer=0
 fireWorkLineList=[]
+fireWorkWork=0
+randomFire=0
+randomFireStop=0
+
+prometejTimer=0
+prometejState=0
+
 
 def smoke(X,Y,speed,movement):
     global smokeList,smokeListDel,smokeTimer,smokeMovementTimer,smokeDirection,smokeDirectionTimer,smokeDirectionSpeed
@@ -56,10 +63,10 @@ def smoke(X,Y,speed,movement):
         wind(-1)
     if(smokeDirection == 2):
         wind(1)
-    quad(800,900,1100,900,1000,200,900,200)
+    quad(800-325,900-75,1100-375,900-75,1000-350,200,900-350,200)
     smokeTimer=(smokeTimer+1)%12
     if(smokeTimer==11):
-        smokeList.append([950,200,X,Y,movement,smokeDirectionTimer,smokeDirectionSpeed])
+        smokeList.append([950-350,200,X,Y,movement,smokeDirectionTimer,smokeDirectionSpeed])
     for el in smokeList:
         if(el[1]>0):
             fill(128,128,128)
@@ -101,11 +108,20 @@ def UFOS(X,Y,direction,Ymove):
     if(STOP==0):
         UFOTimer=(UFOTimer+1)%120
     if(UFOTimer==119):
-        UFOList.append([X,Y,direction,Ymove,Y+Ymove,0])
+        UFOR=random.randint(0,255)
+        UFOG=random.randint(0,255)
+        UFOB=random.randint(0,255)
+        UFOList.append([X,Y,direction,Ymove,Y+Ymove,0,UFOR,UFOG,UFOB])
     for UFOS in UFOList:
         if(UFOS[1]>0):
-            fill(128,128,128)
+            fill(UFOS[6],UFOS[7],UFOS[8])
+            ellipse(UFOS[0],UFOS[1]-30,50,75)
+            fill(UFOS[7],UFOS[8],UFOS[6])
             ellipse(UFOS[0],UFOS[1],100,50)
+            fill(UFOS[8],UFOS[6],UFOS[7])
+            ellipse(UFOS[0],UFOS[1]+5,15,15)
+            ellipse(UFOS[0]-25,UFOS[1]-5,15,15)
+            ellipse(UFOS[0]+25,UFOS[1]-5,15,15)
             if(STOP==0):
                 UFOS[0]+= UFOS[2]
                 if(UFOS[4]<=UFOS[1] and UFOS[5]==0):
@@ -129,10 +145,16 @@ def UFOS(X,Y,direction,Ymove):
     except:
         pass
 
+def znakSTPS():
+    global logo
+    fill(57,57,56)
+    rect(164,740,22,75)
+    fill(121,65,0)
+    rect(77,647,194,92)
+    image(logo, 106, 659)
+
 def text1():
     global textTimer,textX,textY,textW,textH,textTimeOnScreen,textMovement,textSTOP,textImg1,textImg2
-    textImg1=loadImage("napis1.png")
-    textImg2=loadImage("napis2.png")
     if(textSTOP==0):
         fill(255,255,255)
         rect(textX,textY,textW,textH)
@@ -157,14 +179,14 @@ def star():
     ellipse(starX,starY,30,30)
     starX-=starSpeedX
     starY+=starSpeedY
-    starSpeedTimer=(starSpeedTimer+1)%40
-    if(starSpeedTimer==39):
-        starSpeedY+=0.5
+    starSpeedTimer=(starSpeedTimer+1)%30
+    if(starSpeedTimer==29):
+        starSpeedY+=1
     if(starX<=-30):
         starX=1200
         starY=random.randint(0,200)
         starTimer=1
-        starSpeedY=1
+        starSpeedY=-1
         starSpeedX=random.randint(10,20)
         
 def keyPressed():
@@ -183,46 +205,43 @@ def keyReleased():
 def backgroundTest():
     global backgroundClick,clickTimer
     if(mousePressed and mouseButton == LEFT):
-        clickTimer+=1
-    else:
-        clickTimer=0
-    if(clickTimer==1):
-        backgroundClick=(backgroundClick+1)%2
-    if(backgroundClick%2==0):
-        fill(81,136,216)
-        rect(0,0,1200,900)
-        fill(255,255,0)
-        ellipse(70,70,85,85)
-    else:
         fill(24,41,64)
         rect(0,0,1200,900)
         fill(200,200,200)
         ellipse(70,70,85,85)
+    else:
+        fill(81,136,216)
+        rect(0,0,1200,900)
+        fill(255,255,0)
+        ellipse(70,70,85,85)
 
 def platforma():
-    fill(91,187,71)
+    if(mousePressed and mouseButton == LEFT):
+        fill(54,110,43)
+    else:
+        fill(91,187,71)
     ellipseMode(CORNER)
     ellipse(27,784,298,65)
     ellipse(395,772,410,90)
     ellipse(875,784,298,65)
     ellipseMode(CENTER)
-
+    
 def oblak():
-    global cloudClick,cloudClickTimer
-    oblakImg1=loadImage("oblak.png")
-    oblakImg2=loadImage("oblakD.png")
+    global cloudClick,cloudClickTimer,prometejTimer,prometejState,prometejImg1,prometejImg2,prometejImg3,oblakImg1, oblakImg2
     if(mousePressed and mouseButton == LEFT):
-        cloudClickTimer+=1
-    else:
-        cloudClickTimer=0
-    if(cloudClickTimer==1):
-        cloudClick=(cloudClick+1)%2
-    if(cloudClick%2==0):
-        image(oblakImg1,300,100,width/8, height/9)
-        image(oblakImg1,600,120,width/8, height/9)
-    else:
         image(oblakImg2,300,100,width/8, height/9)
-        image(oblakImg2,600,120,width/8, height/9)
+        image(oblakImg2,800,120,width/8, height/9)
+        prometejTimer=(prometejTimer+1)%60
+        if(prometejTimer==59):
+            prometejState+=1
+        if(prometejState%2==0):
+            image(prometejImg2,800,300)
+        else:
+            image(prometejImg3,800,300)
+    else:
+        image(oblakImg1,300,100,width/8, height/9)
+        image(oblakImg1,800,120,width/8, height/9)
+        image(prometejImg1,800,300)
     
 
 def wind(windDirection):
@@ -289,9 +308,9 @@ def wind(windDirection):
             windList=[]
             
 def fireWork():
-    global fireWorkTimer,fireWorkList,fireWorkLengthTimer,fireWorkExplodeTimer
+    global fireWorkTimer,fireWorkList,fireWorkLengthTimer,fireWorkExplodeTimer,fireWorkWork,randomFire,randomFireStop
     fireWorkTimer=(fireWorkTimer+1)%60
-    if(fireWorkTimer%60==59):
+    if(fireWorkTimer%60==59 and randomFire-1>randomFireStop):
         fireWorkLineX1=random.randint(200,1000)
         fireWorkLineY1=900
         fireWorkExplodeY=random.randint(200,500)
@@ -332,13 +351,23 @@ def fireWork():
                 
                 
         if(fire[8]==60):
+            randomFireStop+=1
             fireWorkList.remove(fire)
                 
 def setup():
+    global prometejImg1,prometejImg2,prometejImg3, oblakImg1, oblakImg2,logo,textImg1,textImg2
     size(1200,900)
+    prometejImg1=loadImage("prometej.png")
+    prometejImg2=loadImage("prometejGlow.png")
+    prometejImg3=loadImage("prometejGlowHeart.png")
+    oblakImg1=loadImage("oblak.png")
+    oblakImg2=loadImage("oblakD.png")
+    logo=loadImage("logotip.png")
+    textImg1=loadImage("napis1.png")
+    textImg2=loadImage("napis2.png")
     
 def draw():
-    global smokeTimer,textTimer,textSTOP,starX,starY,starTimer
+    global smokeTimer,textTimer,textSTOP,starX,starY,starTimer,fireWorkWork,randomFire,randomFireStop
     stroke(0)
     backgroundTest()
     smokeRandomWidth=random.randint(50,100)
@@ -359,10 +388,20 @@ def draw():
 
     if(starTimer==0):
         star()
+    platforma()
+    znakSTPS()
     smoke(smokeRandomWidth,smokeRandomHeight,smokeRandomSpeed,smokeMovement)
     oblak()
     UFOS(UFOX,UFOY,UFODirection,UFOYMovement)
-    fireWork()
+    if(keyPressed and key=="f" or key == "F"):
+        if(fireWorkWork==0):
+            fireWorkWork=1
+            randomFire=random.randint(5,10)
+    if(fireWorkWork==1 and randomFireStop<randomFire):
+        fireWork()
+    if(randomFireStop==randomFire):
+        fireWorkWork=0
+        randomFireStop=0
     stroke(0)
     if(keyPressed and key=="n" or key == "N"):
         textTimer=0
