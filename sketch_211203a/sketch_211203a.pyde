@@ -203,15 +203,21 @@ def keyReleased():
 def backgroundTest():
     global backgroundClick,clickTimer
     if(mousePressed and mouseButton == LEFT):
+        """
         fill(24,41,64)
         rect(0,0,1200,900)
         fill(200,200,200)
         ellipse(70,70,85,85)
+        """
+        image(backgroundImg2,0,0)
     else:
+        image(backgroundImg1,0,0)
+        """
         fill(81,136,216)
         rect(0,0,1200,900)
         fill(255,255,0)
         ellipse(70,70,85,85)
+        """
 
 def platforma():
     if(mousePressed and mouseButton == LEFT):
@@ -377,7 +383,7 @@ def fireWork():
             fireWorkList.remove(fire)
                 
 def setup():
-    global prometejImg1,prometejImg2,prometejImg3, oblakImg1, oblakImg2,logo,textImg1,textImg2
+    global prometejImg1,prometejImg2,prometejImg3, oblakImg1, oblakImg2,logo,textImg1,textImg2,backgroundImg1,backgroundImg2
     size(1200,900)
     prometejImg1=loadImage("prometej.png")
     prometejImg2=loadImage("prometejGlow.png")
@@ -387,6 +393,8 @@ def setup():
     logo=loadImage("logotip.png")
     textImg1=loadImage("napis0.png")
     textImg2=loadImage("napis1.png")
+    backgroundImg1=loadImage("background1.png")
+    backgroundImg2=loadImage("background2.png")
     
 def draw():
     global smokeTimer,textTimer,textSTOP,starX,starY,starTimer,fireWorkWork,randomFire,randomFireStop
