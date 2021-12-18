@@ -156,8 +156,6 @@ def znakSTPS():
 def text1():
     global textTimer,textX,textY,textW,textH,textTimeOnScreen,textMovement,textSTOP,textImg1,textImg2
     if(textSTOP==0):
-        fill(255,255,255)
-        rect(textX,textY,textW,textH)
         image(textImg1,textX,textY)
         textY+=textMovement
         if(textY>=200 and textMovement == 3 or textMovement==0):
@@ -387,8 +385,8 @@ def setup():
     oblakImg1=loadImage("oblak.png")
     oblakImg2=loadImage("oblakD.png")
     logo=loadImage("logotip.png")
-    textImg1=loadImage("napis1.png")
-    textImg2=loadImage("napis2.png")
+    textImg1=loadImage("napis0.png")
+    textImg2=loadImage("napis1.png")
     
 def draw():
     global smokeTimer,textTimer,textSTOP,starX,starY,starTimer,fireWorkWork,randomFire,randomFireStop
