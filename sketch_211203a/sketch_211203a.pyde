@@ -383,7 +383,7 @@ def fireWork():
             fireWorkList.remove(fire)
                 
 def setup():
-    global prometejImg1,prometejImg2,prometejImg3, oblakImg1, oblakImg2,logo,textImg1,textImg2,backgroundImg1,backgroundImg2
+    global prometejImg1,prometejImg2,prometejImg3, oblakImg1, oblakImg2,logo,textImg1,textImg2,backgroundImg1,backgroundImg2,fireWorkList
     size(1200,900)
     prometejImg1=loadImage("prometej.png")
     prometejImg2=loadImage("prometejGlow.png")
@@ -433,6 +433,7 @@ def draw():
     if(randomFireStop==randomFire):
         fireWorkWork=0
         randomFireStop=0
+        fireWorkList=[]
     stroke(0)
     strokeWeight(1);
     if(keyPressed and key=="n" or key == "N"):
