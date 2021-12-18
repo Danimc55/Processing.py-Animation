@@ -235,13 +235,13 @@ def oblak():
         if(prometejTimer==59):
             prometejState+=1
         if(prometejState%2==0):
-            image(prometejImg2,800,300)
+            image(prometejImg2,900,500)
         else:
-            image(prometejImg3,800,300)
+            image(prometejImg3,900,500)
     else:
         image(oblakImg1,300,100,width/8, height/9)
         image(oblakImg1,800,120,width/8, height/9)
-        image(prometejImg1,800,300)
+        image(prometejImg1,900,500)
     
 
 def wind(windDirection):
@@ -310,12 +310,13 @@ def wind(windDirection):
 def fireWork():
     global fireWorkTimer,fireWorkList,fireWorkLengthTimer,fireWorkExplodeTimer,fireWorkWork,randomFire,randomFireStop
     fireWorkTimer=(fireWorkTimer+1)%60
+    strokeWeight(3);
     if(fireWorkTimer%60==59 and randomFire-1>randomFireStop):
         fireWorkLineX1=random.randint(200,1000)
         fireWorkLineY1=900
         fireWorkExplodeY=random.randint(200,500)
-        fireWorkSize=random.randint(50,100)
-        fireWorkRandomBoom=random.randint(7,10)*2
+        fireWorkSize=2
+        fireWorkRandomBoom=random.randint(10,20)*2
         fireWorkSplit=math.pi/fireWorkRandomBoom
         cosX=0
         sinY=0
@@ -323,7 +324,11 @@ def fireWork():
         fireR=random.randint(0,255)
         fireG=random.randint(0,255)
         fireB=random.randint(0,255)
-        fireWorkList.append([fireWorkLineX1,fireWorkLineY1,fireWorkSize,fireWorkRandomBoom,fireWorkSplit,cosX,sinY,fireWorkExplodeY,fireWorkExplodeTimer,fireWorkLength,fireR,fireG,fireB])
+        fireWorkX2=0
+        fireWorkY2=0
+        fireWorkX3=0
+        fireWorkY3=0
+        fireWorkList.append([fireWorkLineX1,fireWorkLineY1,fireWorkSize,fireWorkRandomBoom,fireWorkSplit,cosX,sinY,fireWorkExplodeY,fireWorkExplodeTimer,fireWorkLength,fireR,fireG,fireB,fireWorkX2,fireWorkY2,0,fireWorkX3,fireWorkY3,0,0,0,0,0])
     for fire in fireWorkList:
         if(fire[1]<=fire[7]):
             fire[8]+=1
@@ -333,22 +338,41 @@ def fireWork():
         if(fire[8]>=1):
             fire[5]=0
             fire[6]=0
+            fire[18]+=0.5
+            fire[19]+=1
+            fire[20]+=1.5
+            fire[21]+=2
+            fire[22]+=3
             for j in range(fire[3]):
-                if(fireWorkLengthTimer%2==0):
-                    fire[9]=1
+                if(fireWorkLengthTimer%3==0):
                     stroke(fire[10],fire[11],fire[12])
+                elif(fireWorkLengthTimer%3==1):
+                    stroke(fire[12],fire[10],fire[11])
                 else:
-                    fire[9]=0.75
+                    stroke(fire[11],fire[12],fire[10])
                     stroke(255-fire[10],255-fire[11],255-fire[12])
-                fireWorkLengthTimer=(fireWorkLengthTimer+1)%2
+                fire[9]=1
+                fireWorkLengthTimer=(fireWorkLengthTimer+1)%3
                 fire[5]+=fire[4]*2
                 fire[6]+=fire[4]*2
                 fireWorkCos=math.cos(fire[5])
                 fireWorkSin=math.sin(fire[6])
-                fireWorkX2=fireWorkCos*fire[2]*fire[9]+fire[0]
-                fireWorkY2=fireWorkSin*fire[2]*fire[9]+fire[1]
-                line(fire[0],fire[1],fireWorkX2,fireWorkY2)
-                
+                fireWorkRandomSpeed=random.randint(1,5)
+                if(fireWorkRandomSpeed==1):
+                    fire[15]=fire[18]
+                elif(fireWorkRandomSpeed==2):
+                    fire[15]=fire[19]
+                elif(fireWorkRandomSpeed==3):
+                    fire[15]=fire[20]
+                elif(fireWorkRandomSpeed==4):
+                    fire[15]=fire[21]
+                else:
+                    fire[15]=fire[22]
+                fire[13]=fireWorkCos*(fire[2]+fire[15])*fire[9]+fire[0]
+                fire[14]=fireWorkSin*(fire[2]+fire[15])*fire[9]+fire[1]
+                fire[16]=fireWorkCos*(fire[2]+fire[15]-3)*fire[9]+fire[0]
+                fire[17]=fireWorkSin*(fire[2]+fire[15]-3)*fire[9]+fire[1]
+                line(fire[16],fire[17],fire[13],fire[14])
                 
         if(fire[8]==60):
             randomFireStop+=1
@@ -369,6 +393,7 @@ def setup():
 def draw():
     global smokeTimer,textTimer,textSTOP,starX,starY,starTimer,fireWorkWork,randomFire,randomFireStop
     stroke(0)
+    strokeWeight(1)
     backgroundTest()
     smokeRandomWidth=random.randint(50,100)
     smokeRandomHeight=random.randint(40,80)
@@ -403,6 +428,7 @@ def draw():
         fireWorkWork=0
         randomFireStop=0
     stroke(0)
+    strokeWeight(1);
     if(keyPressed and key=="n" or key == "N"):
         textTimer=0
     if(textTimer==0):
