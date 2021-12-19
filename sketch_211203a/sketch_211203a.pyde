@@ -203,22 +203,15 @@ def keyReleased():
 def backgroundTest():
     global backgroundClick,clickTimer
     if(mousePressed and mouseButton == LEFT):
-        """
-        fill(24,41,64)
-        rect(0,0,1200,900)
+        image(backgroundImg2,0,0)
         fill(200,200,200)
         ellipse(70,70,85,85)
-        """
-        image(backgroundImg2,0,0)
+        
     else:
         image(backgroundImg1,0,0)
-        """
-        fill(81,136,216)
-        rect(0,0,1200,900)
         fill(255,255,0)
         ellipse(70,70,85,85)
-        """
-
+    
 def platforma():
     if(mousePressed and mouseButton == LEFT):
         fill(54,110,43)
@@ -239,13 +232,13 @@ def oblak():
         if(prometejTimer==59):
             prometejState+=1
         if(prometejState%2==0):
-            image(prometejImg2,900,500)
+            image(prometejImg2,921,500)
         else:
-            image(prometejImg3,900,500)
+            image(prometejImg3,921,500)
     else:
         image(oblakImg1,300,100,width/8, height/9)
         image(oblakImg1,800,120,width/8, height/9)
-        image(prometejImg1,900,500)
+        image(prometejImg1,921,500)
     
 
 def wind(windDirection):
