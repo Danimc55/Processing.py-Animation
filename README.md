@@ -1,6 +1,6 @@
 # Zasavje 2525: Animation
  
-## Autohors
+## Authors
 
 * Danijel Tomić
 * Žan Hribar
